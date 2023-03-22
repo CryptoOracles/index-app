@@ -9,8 +9,6 @@ import { DefaultGasLimitFlashMintLeveraged } from 'constants/gas'
 import {
   eligibleLeveragedExchangeIssuanceTokens,
   ETH,
-  icETHIndex,
-  STETH,
   Token,
 } from 'constants/tokens'
 import { getFullCostsInUsd, getGasCostsInUsd } from 'utils/costs'
@@ -33,23 +31,6 @@ export const isEligibleTradePair = (
   const tokenEligible = isIssuance
     ? isEligibleLeveragedToken(outputToken)
     : isEligibleLeveragedToken(inputToken)
-
-  const isIcEth =
-    inputToken.symbol === icETHIndex.symbol ||
-    outputToken.symbol === icETHIndex.symbol
-
-  if (tokenEligible && isIcEth && isIssuance) {
-    // Only ETH or stETH is allowed as input for icETH issuance at the moment
-    return (
-      inputToken.symbol === ETH.symbol || inputToken.symbol === STETH.symbol
-    )
-  }
-
-  if (tokenEligible && isIcEth && !isIssuance) {
-    // Only ETH is allowed as output for icETH redeeming at the moment
-    return outputToken.symbol === ETH.symbol
-  }
-
   return tokenEligible
 }
 

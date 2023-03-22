@@ -111,14 +111,6 @@ const useTrade = (tx: TransactionReview) => {
       )
       return
     }
-    if (quotes.flashMintNotional) {
-      await executeFlashMintNotionalTrade(
-        quotes.flashMintNotional,
-        slippage,
-        override
-      )
-      return
-    }
     if (quotes.flashMintZeroEx) {
       await executeFlashMintZeroExTrade(
         quotes.flashMintZeroEx,

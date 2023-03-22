@@ -1,14 +1,10 @@
 import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
 import {
-  Bitcoin2xFlexibleLeverageIndex,
   ETH,
-  Ethereum2xFlexibleLeverageIndex,
   flashMintIndexesMainnetRedeem,
   flashMintIndexesPolygonRedeem,
-  icETHIndex,
   indexNamesMainnet,
   indexNamesPolygon,
-  IndexToken,
   mainnetCurrencyTokens,
   MATIC,
   optimismCurrencyTokens,
@@ -20,7 +16,6 @@ export function getAddressForToken(
   token: Token,
   chainId: number | undefined
 ): string | undefined {
-  if (token.symbol === IndexToken.symbol) return token.address
   switch (chainId) {
     case MAINNET.chainId:
       return token.address
@@ -64,9 +59,7 @@ export function getNativeToken(chainId: number | undefined): Token | null {
 }
 
 export function isLeveragedToken(token: Token): boolean {
-  if (token === Bitcoin2xFlexibleLeverageIndex) return true
-  if (token === Ethereum2xFlexibleLeverageIndex) return true
-  if (token === icETHIndex) return true
+  //if (token === "leveragedToken") return true
   return false
 }
 

@@ -30,10 +30,6 @@ export const getContractForQuote = (
     ).address
   }
 
-  if (quotes.flashMintNotional) {
-    return FlashMintNotionalContractAddress
-  }
-
   if (quotes.flashMintZeroEx) {
     const setToken = quotes.flashMintZeroEx.isMinting
       ? quotes.flashMintZeroEx.outputToken
@@ -61,10 +57,6 @@ export const getQuoteAmount = (
 
   if (quotes.flashMintLeveraged) {
     return quotes.flashMintLeveraged.inputOutputTokenAmount
-  }
-
-  if (quotes.flashMintNotional) {
-    return quotes.flashMintNotional.inputOutputTokenAmount
   }
 
   if (quotes.flashMintZeroEx) {

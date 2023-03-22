@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { MAINNET } from 'constants/chains'
-import { IndexToken, Token } from 'constants/tokens'
+import { Token } from 'constants/tokens'
 import { IndexApi } from 'utils/api/indexApi'
 import { getAddressForToken } from 'utils/tokens'
+import { IndexCoopApiBaseUrl } from 'constants/server'
 
 export interface SetComponent {
   /**
@@ -73,10 +74,10 @@ export const useTokenComponents = (token: Token, isPerpToken = false) => {
   const fetchComponents = useCallback(async () => {
     const chainId = token.defaultChain || MAINNET.chainId
     const address = getAddressForToken(token, chainId)
-    if (!address || token.symbol === IndexToken.symbol) return
+    if (!address) return
     try {
       const indexApi = new IndexApi()
-      const path = `/components?chainId=${chainId}&isPerpToken=${isPerpToken}&address=${address}`
+      const path = `${IndexCoopApiBaseUrl}/components?chainId=${chainId}&isPerpToken=${isPerpToken}&address=${address}`
       const { components, vAssets } = await indexApi.get(path)
       setComponents(components)
       setVAssets(vAssets)

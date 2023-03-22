@@ -295,7 +295,7 @@ export const useBestQuote = () => {
 
       // Create an instance of ZeroExApi (to pass to quote functions)
       const networkKey = getNetworkKey(chainId)
-      const swapPathOverride = `/${networkKey}/swap/v1/quote`
+      const swapPathOverride = `/swap/v1/quote`
       const zeroExApi = getConfiguredZeroExApi(swapPathOverride)
 
       const inputTokenBalance =

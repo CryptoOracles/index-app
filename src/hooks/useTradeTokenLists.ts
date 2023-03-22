@@ -3,23 +3,14 @@ import { useEffect, useState } from 'react'
 import { MAINNET, OPTIMISM, POLYGON } from 'constants/chains'
 import {
   DAI,
-  DiversifiedStakedETHIndex,
   ETH,
-  FIXED_DAI,
-  FIXED_USDC,
   flashMintIndexesMainnetRedeem,
   flashMintIndexesPolygonRedeem,
-  icETHIndex,
   indexNamesMainnet,
   indexNamesPolygon,
-  RETH,
-  SETH2,
-  STETH,
   Token,
   USDC,
-  WETH,
-  WSETH2,
-  WSTETH,
+  WETH
 } from 'constants/tokens'
 import { fetchCoingeckoTokenPrice } from 'utils/api/coingeckoApi'
 import {
@@ -170,11 +161,6 @@ export const useTradeTokenLists = (
  * @returns A (filtered) Token[] list.
  */
 export const getCurrencyTokensForToken = (token: Token, chainId: number) => {
-  if (token.symbol === FIXED_DAI.symbol) return [DAI]
-  if (token.symbol === FIXED_USDC.symbol) return [USDC]
-  if (token.symbol === icETHIndex.symbol) return [ETH, STETH]
-  if (token.symbol === DiversifiedStakedETHIndex.symbol)
-    return [ETH, WETH, STETH, WSTETH, RETH, SETH2, USDC]
   const currencyTokens = getCurrencyTokens(chainId)
   return currencyTokens
 }

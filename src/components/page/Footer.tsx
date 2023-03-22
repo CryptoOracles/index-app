@@ -47,7 +47,7 @@ const Disclaimer = () => (
       in the area for which such advice would be appropriate. This information
       is not intended to be comprehensive or address all aspects of Index or its
       products. There is additional documentation on Index’s website about the
-      functioning of Index Coop, and its ecosystem and community.
+      functioning of Crypto Oracles DAO, and its ecosystem and community.
       <br />
       <br />
       You shall not purchase or otherwise acquire our restricted tokens if you
@@ -167,7 +167,7 @@ const Links = ({ textColor }: { textColor: string }) => (
 const Logo = ({ isDarkMode }: { isDarkMode: boolean }) => {
   const fullLogo = isDarkMode ? IndexLogoFullWhite : IndexLogoFullBlack
   return (
-    <img alt='Index Coop Logo' src={fullLogo} height='30px' width='130px' />
+    <img alt='Crypto Oracles DAO Logo' src={fullLogo} height='30px' width='130px' />
   )
 }
 

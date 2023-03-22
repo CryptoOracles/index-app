@@ -1,8 +1,8 @@
 import { OPTIMISM, POLYGON } from 'constants/chains'
 import { ETH } from 'constants/tokens'
 import { IndexApi } from 'utils/api/indexApi'
+import { CoinGeckoApiBaseUrl } from "constants/server"
 
-const baseURL = '/coingecko'
 const indexApi = new IndexApi()
 
 export const fetchHistoricalTokenMarketData = async (
@@ -10,10 +10,10 @@ export const fetchHistoricalTokenMarketData = async (
   baseCurrency = 'usd'
 ) => {
   const coingeckoMaxTokenDataUrl =
-    baseURL +
+    CoinGeckoApiBaseUrl +
     `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=max&interval=daily`
   const coingeckoHourlyTokenDataUrl =
-    baseURL + `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=90`
+    CoinGeckoApiBaseUrl + `/coins/${id}/market_chart?vs_currency=${baseCurrency}&days=90`
   return Promise.all([
     indexApi.get(coingeckoMaxTokenDataUrl),
     indexApi.get(coingeckoHourlyTokenDataUrl),
@@ -44,7 +44,7 @@ export const fetchCoingeckoTokenPrice = async (
 ): Promise<number> => {
   if (address === ETH.address) {
     const priceUrl =
-      baseURL + `/simple/price/?ids=ethereum&vs_currencies=${baseCurrency}`
+      CoinGeckoApiBaseUrl + `/simple/price/?ids=ethereum&vs_currencies=${baseCurrency}`
 
     const data = await indexApi.get(priceUrl).catch((_) => {
       return 0
@@ -56,7 +56,7 @@ export const fetchCoingeckoTokenPrice = async (
   }
 
   const getPriceUrl =
-    baseURL +
+    CoinGeckoApiBaseUrl +
     `/simple/token_price/${getAssetPlatform(
       chainId
     )}/?contract_addresses=${address}&vs_currencies=${baseCurrency}`

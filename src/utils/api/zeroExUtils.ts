@@ -1,12 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber'
 
 import { OPTIMISM, POLYGON } from 'constants/chains'
-import { ZeroExAffiliateAddress } from 'constants/server'
+import { ZeroExAffiliateAddress, ZeroExApiBaseUrl  } from 'constants/server'
 import { Token } from 'constants/tokens'
 import { toWei } from 'utils'
 import { IndexApi } from 'utils/api/indexApi'
-
-const API_0X_INDEX_URL = `/0x`
 
 type Result<T, E = Error> =
   | { success: true; value: T }
@@ -49,10 +47,10 @@ export function getNetworkKey(chainId: number): string {
 }
 
 function getApiUrl(query: string, chainId: number): string {
-  const quotePath = '/swap/v1/quote'
+  const quotePath = 'swap/v1/quote'
   const networkKey = getNetworkKey(chainId)
   // example: https://api.indexcoop.com/0x/mainnet/swap/v1/quote?sellToken=ETH&buyToken=0x1494CA1F11D487c2bBe4543E90080AeBa4BA3C2b&sellAmount=10000000000000000000&affiliateAddress=
-  return `${API_0X_INDEX_URL}/${networkKey}${quotePath}?${query}&affiliateAddress=${ZeroExAffiliateAddress}`
+  return `/${quotePath}?${query}&affiliateAddress=${ZeroExAffiliateAddress}`
 }
 
 /**
@@ -77,7 +75,7 @@ export const getZeroExTradeData = async (
   )
   params.slippagePercentage = slippagePercentage
   const query = new URLSearchParams(params).toString()
-  const path = getApiUrl(query, chainId)
+  const path = ZeroExApiBaseUrl+getApiUrl(query, chainId)
   try {
     const indexApi = new IndexApi()
     const resp = await indexApi.get(path)

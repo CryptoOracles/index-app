@@ -7,15 +7,7 @@ import {
 } from 'react'
 
 import {
-  BedIndex,
-  Bitcoin2xFlexibleLeverageIndex,
-  DefiPulseIndex,
-  DiversifiedStakedETHIndex,
   ETH,
-  Ethereum2xFlexibleLeverageIndex,
-  GmiIndex,
-  icETHIndex,
-  IndexToken,
   MetaverseIndex,
   Token,
 } from 'constants/tokens'
@@ -55,38 +47,16 @@ export const MarketDataContext = createContext<TokenContext>({
 export const useMarketData = () => useContext(MarketDataContext)
 
 export const MarketDataProvider = (props: { children: any }) => {
-  const [dsEthMarketData, setDsEthMarketData] = useState<any>({})
   const [ethMarketData, setEthMarketData] = useState<any>({})
-  const [indexMarketData, setIndexMarketData] = useState<any>({})
-  const [dpiMarketData, setDpiMarketData] = useState<any>({})
   const [mviMarketData, setMviMarketData] = useState<any>({})
-  const [bedMarketData, setBedMarketData] = useState<any>({})
-  const [ethFliMarketData, setEthFliMarketData] = useState<any>({})
-  const [btcFliMarketData, setBtcFliMarketData] = useState<any>({})
-  const [icEthMarketData, setIcEthMarketData] = useState<any>({})
-  const [gmiMarketData, setGmiMarketData] = useState<any>({})
 
   const selectLatestMarketData = (marketData?: number[][]) =>
     marketData?.[marketData.length - 1]?.[1] || 0
 
   const selectMarketDataByToken = (token: Token) => {
     switch (token) {
-      case DefiPulseIndex:
-        return dpiMarketData
-      case DiversifiedStakedETHIndex:
-        return dsEthMarketData
       case MetaverseIndex:
         return mviMarketData
-      case BedIndex:
-        return bedMarketData
-      case Ethereum2xFlexibleLeverageIndex:
-        return ethFliMarketData
-      case Bitcoin2xFlexibleLeverageIndex:
-        return btcFliMarketData
-      case icETHIndex:
-        return icEthMarketData
-      case GmiIndex:
-        return gmiMarketData
       default:
         return 0
     }
@@ -96,24 +66,8 @@ export const MarketDataProvider = (props: { children: any }) => {
     token: Token
   ): TokenMarketDataValues | null => {
     switch (token) {
-      case DefiPulseIndex:
-        return dpiMarketData
-      case DiversifiedStakedETHIndex:
-        return dsEthMarketData
       case MetaverseIndex:
         return mviMarketData
-      case BedIndex:
-        return bedMarketData
-      case Ethereum2xFlexibleLeverageIndex:
-        return ethFliMarketData
-      case Bitcoin2xFlexibleLeverageIndex:
-        return btcFliMarketData
-      case icETHIndex:
-        return icEthMarketData
-      case IndexToken:
-        return indexMarketData
-      case GmiIndex:
-        return gmiMarketData
       default:
         return null
     }
@@ -122,31 +76,11 @@ export const MarketDataProvider = (props: { children: any }) => {
   const fetchMarketData = useCallback(async () => {
     const marketData = await Promise.all([
       fetchHistoricalTokenMarketData(ETH.coingeckoId),
-      fetchHistoricalTokenMarketData(IndexToken.coingeckoId),
-      fetchHistoricalTokenMarketData(DefiPulseIndex.coingeckoId),
       fetchHistoricalTokenMarketData(MetaverseIndex.coingeckoId),
-      fetchHistoricalTokenMarketData(BedIndex.coingeckoId),
-      fetchHistoricalTokenMarketData(
-        Ethereum2xFlexibleLeverageIndex.coingeckoId
-      ),
-      fetchHistoricalTokenMarketData(
-        Bitcoin2xFlexibleLeverageIndex.coingeckoId
-      ),
-      fetchHistoricalTokenMarketData(icETHIndex.coingeckoId),
-      fetchHistoricalTokenMarketData(GmiIndex.coingeckoId),
-      fetchHistoricalTokenMarketData(DiversifiedStakedETHIndex.coingeckoId),
     ])
 
     setEthMarketData(marketData[0])
-    setIndexMarketData(marketData[1])
-    setDpiMarketData(marketData[2])
-    setMviMarketData(marketData[3])
-    setBedMarketData(marketData[4])
-    setEthFliMarketData(marketData[5])
-    setBtcFliMarketData(marketData[6])
-    setIcEthMarketData(marketData[7])
-    setGmiMarketData(marketData[8])
-    setDsEthMarketData(marketData[9])
+    setMviMarketData(marketData[1])
   }, [])
 
   useEffect(() => {
@@ -160,14 +94,7 @@ export const MarketDataProvider = (props: { children: any }) => {
         selectLatestMarketData,
         selectMarketDataByToken,
         eth: ethMarketData,
-        index: indexMarketData,
-        dpi: dpiMarketData,
-        gmi: gmiMarketData,
         mvi: mviMarketData,
-        bed: bedMarketData,
-        ethfli: ethFliMarketData,
-        btcfli: btcFliMarketData,
-        iceth: icEthMarketData,
       }}
     >
       {props.children}

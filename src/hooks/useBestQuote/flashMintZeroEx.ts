@@ -5,12 +5,6 @@ import { getFlashMintZeroExQuote, ZeroExApi } from '@indexcoop/flash-mint-sdk'
 import { MAINNET } from 'constants/chains'
 import { DefaultGasLimitFlashMintZeroEx } from 'constants/gas'
 import {
-  Bitcoin2xFlexibleLeverageIndex,
-  Ethereum2xFlexibleLeverageIndex,
-  FIXED_DAI,
-  FIXED_USDC,
-  icETHIndex,
-  IndexToken,
   Token,
 } from 'constants/tokens'
 import { getFullCostsInUsd, getGasCostsInUsd } from 'utils/costs'
@@ -19,47 +13,6 @@ import { GasEstimatooor } from 'utils/gasEstimatooor'
 import { TxSimulator } from 'utils/simulator'
 
 import { ExchangeIssuanceZeroExQuote, QuoteType } from './'
-
-export function isEligibleTradePairZeroEx(
-  inputToken: Token,
-  outputToken: Token
-): boolean {
-  if (
-    inputToken.symbol === FIXED_DAI.symbol ||
-    outputToken.symbol === FIXED_DAI.symbol
-  )
-    return false
-  if (
-    inputToken.symbol === FIXED_USDC.symbol ||
-    outputToken.symbol === FIXED_USDC.symbol
-  )
-    return false
-  if (
-    inputToken.symbol === Bitcoin2xFlexibleLeverageIndex.symbol ||
-    outputToken.symbol === Bitcoin2xFlexibleLeverageIndex.symbol
-  )
-    return false
-
-  if (
-    inputToken.symbol === Ethereum2xFlexibleLeverageIndex.symbol ||
-    outputToken.symbol === Ethereum2xFlexibleLeverageIndex.symbol
-  )
-    return false
-
-  if (
-    inputToken.symbol === icETHIndex.symbol ||
-    outputToken.symbol === icETHIndex.symbol
-  )
-    return false
-
-  if (
-    inputToken.symbol === IndexToken.symbol ||
-    outputToken.symbol === IndexToken.symbol
-  )
-    return false
-
-  return true
-}
 
 export async function getEnhancedFlashMintZeroExQuote(
   isMinting: boolean,
@@ -80,9 +33,6 @@ export async function getEnhancedFlashMintZeroExQuote(
 ): Promise<ExchangeIssuanceZeroExQuote | null> {
   // Allow trading only on mainnet and polygon (for deprecated/rebalanced tokens)
   if (chainId !== MAINNET.chainId && chainId !== 137) return null
-  // For mainnet some tokens are disabled additionally
-  const isEligibleTradePair = isEligibleTradePairZeroEx(sellToken, buyToken)
-  if (!isEligibleTradePair) return null
 
   const inputToken = {
     symbol: sellToken.symbol,

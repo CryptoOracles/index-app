@@ -49,6 +49,7 @@ export const useTradeFlashMintZeroEx = () => {
       const inputOutputTokenAmount = quote.inputOutputTokenAmount
       const gasLimit = quote.gas
       const componentQuotes = quote.componentQuotes
+      console.log(componentQuotes);
 
       const outputTokenAddress = getAddressForToken(outputToken, chainId)
       const inputTokenAddress = getAddressForToken(inputToken, chainId)

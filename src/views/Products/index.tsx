@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react'
 
 import Page from 'components/page/Page'
 import PageTitle from 'components/page/PageTitle'
-import Indices, { IndexToken, IndexType, Token } from 'constants/tokens'
+import Indices, {IndexType, Token } from 'constants/tokens'
 import { TokenContextKeys, useMarketData } from 'providers/MarketData'
 
 import { ProductFilter, ProductsFilter } from './components/ProductsFilter'
@@ -133,7 +133,6 @@ const Products = () => {
 
   const productsWithMarketData = (indices: Token[]) =>
     indices
-      .filter((product) => product.symbol !== IndexToken.symbol)
       .map((product) => {
         return appendProductPerformance({
           product,
@@ -158,7 +157,7 @@ const Products = () => {
     <Page>
       <Box w='100%'>
         <PageTitle
-          title='Discover Index Coop Indices'
+          title='Discover Crypto Oracles DAO Indices'
           subtitle='Simple yet powerful crypto investment themes'
         />
         <ProductsFilter

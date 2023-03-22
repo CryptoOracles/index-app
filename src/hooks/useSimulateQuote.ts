@@ -24,14 +24,19 @@ export const useSimulateQuote = (quoteResult: FlashMintQuoteResult) => {
     const project = process.env.REACT_APP_TENDERLY_PROJECT ?? ''
     const user = process.env.REACT_APP_TENDERLY_USER ?? ''
     let success = false
+    
     try {
-      const simulator = new TxSimulator(accessKey, user, project)
+      const simulator = new TxSimulator(accessKey, user, project) 
       success = await simulator.simulate(request)
     } catch {
-      // fallback: make a gas estimate
-      let gasEstimate: BigNumber = await provider.estimateGas(request)
-      success = gasEstimate.gt(0)
+      try {// fallback: make a gas estimate
+        let gasEstimate: BigNumber = await provider.estimateGas(request)
+        success = gasEstimate.gt(0)
+      } catch (e) {
+        console.log(e);
+      }
     }
+
     return success
   }
 
@@ -52,7 +57,6 @@ class TransactionRequestBuilder {
     const { inputTokenBalance, slippage } = quoteResult
     const {
       flashMintLeveraged: quoteLeveraged,
-      flashMintNotional: quoteNotional,
       flashMintZeroEx: quoteZeroEx,
     } = quoteResult.quotes
     let request: PopulatedTransaction | null = null
@@ -66,21 +70,6 @@ class TransactionRequestBuilder {
         quoteLeveraged.inputOutputTokenAmount,
         quoteLeveraged.swapDataDebtCollateral,
         quoteLeveraged.swapDataPaymentToken,
-        provider,
-        signer,
-        chainId
-      )
-    }
-
-    if (quoteNotional) {
-      request = await getFlashMintNotionalTransaction(
-        quoteNotional.isMinting,
-        quoteNotional.inputToken,
-        quoteNotional.outputToken,
-        quoteNotional.indexTokenAmount,
-        quoteNotional.inputOutputTokenAmount,
-        quoteNotional.swapData,
-        slippage,
         provider,
         signer,
         chainId

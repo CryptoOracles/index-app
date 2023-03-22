@@ -5,7 +5,7 @@ import { Box, Flex, Link, Text, useBreakpointValue } from '@chakra-ui/react'
 import Page from 'components/page/Page'
 import { getPriceChartData } from 'components/token-page/charts/PriceChartData'
 import QuickTradeContainer from 'components/trade'
-import { IndexToken, Token } from 'constants/tokens'
+import { Token } from 'constants/tokens'
 import { useNetwork } from 'hooks/useNetwork'
 import { useTokenComponents } from 'hooks/useTokenComponents'
 import { useTokenSupply } from 'hooks/useTokenSupply'
@@ -62,14 +62,12 @@ function getStatsForToken(
     { title: 'Volume (24h)', value: volumeFormatted },
     { title: 'Current Supply', value: supplyFormatted },
   ]
-  if (token.symbol !== IndexToken.symbol) {
-    stats.push(
-      { title: 'Streaming Fee', value: token.fees?.streamingFee ?? 'n/a' },
-      { title: 'Mint Fee', value: token.fees?.mintFee ?? 'n/a' },
-      { title: 'Redeem Fee', value: token.fees?.redeemFee ?? 'n/a' },
-      { title: 'NAV', value: formatter.format(nav) }
-    )
-  }
+  stats.push(
+    { title: 'Streaming Fee', value: token.fees?.streamingFee ?? 'n/a' },
+    { title: 'Mint Fee', value: token.fees?.mintFee ?? 'n/a' },
+    { title: 'Redeem Fee', value: token.fees?.redeemFee ?? 'n/a' },
+    { title: 'NAV', value: formatter.format(nav) }
+  )
 
   return stats
 }
@@ -138,7 +136,7 @@ const TokenPage = (props: { token: Token; apy?: string }) => {
           </Flex>
           <TokenPageSectionHeader title='Stats' topMargin='120px' />
           <TokenStats stats={stats} />
-          {props.token.symbol !== IndexToken.symbol && (
+          {(
             <>
               <TokenPageSectionHeader title='Allocations' />
               <TokenComponentsTable

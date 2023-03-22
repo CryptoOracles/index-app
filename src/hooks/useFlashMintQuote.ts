@@ -1,9 +1,7 @@
 import { useState } from 'react'
 
 import { BigNumber } from '@ethersproject/bignumber'
-import { ZeroExApi } from '@indexcoop/flash-mint-sdk'
 
-import { IndexApiBaseUrl } from 'constants/server'
 import { Token } from 'constants/tokens'
 import { useNetwork } from 'hooks/useNetwork'
 import { useBalanceData } from 'providers/Balances'
@@ -14,7 +12,6 @@ import { getAddressForToken } from 'utils/tokens'
 
 import { useIssuanceQuote } from './issuance/useIssuanceQuote'
 import { getEnhancedFlashMintLeveragedQuote } from './useBestQuote/flashMintLeveraged'
-import { getEnhancedFlashMintNotionalQuote } from './useBestQuote/flashMintNotional'
 import { getEnhancedFlashMintZeroExQuote } from './useBestQuote/flashMintZeroEx'
 import {
   ExchangeIssuanceLeveragedQuote,
@@ -30,7 +27,6 @@ type FlashMintPerpQuote = {
 export type FlashMintQuoteResult = {
   quotes: {
     flashMintLeveraged: ExchangeIssuanceLeveragedQuote | null
-    flashMintNotional: FlashMintNotionalQuote | null
     flashMintPerp: FlashMintPerpQuote | null
     flashMintZeroEx: ExchangeIssuanceZeroExQuote | null
   }
@@ -87,7 +83,6 @@ export const useFlashMintQuote = () => {
     setIsFetching(true)
 
     let flashMintLeveragedQuote: ExchangeIssuanceLeveragedQuote | null = null
-    let flashMintNotionalQuote: FlashMintNotionalQuote | null = null
     let flashMintPerpQuote: FlashMintPerpQuote | null = null
     let flashMintZeroExQuote: ExchangeIssuanceZeroExQuote | null = null
 
@@ -110,7 +105,7 @@ export const useFlashMintQuote = () => {
 
       // Create an instance of ZeroExApi (to pass to quote functions)
       const networkKey = getNetworkKey(chainId)
-      const swapPathOverride = `/${networkKey}/swap/v1/quote`
+      const swapPathOverride = `/swap/v1/quote`
       const zeroExApi = getConfiguredZeroExApi(swapPathOverride)
 
       flashMintLeveragedQuote = await getEnhancedFlashMintLeveragedQuote(
@@ -149,30 +144,14 @@ export const useFlashMintQuote = () => {
         signer
       )
 
-      flashMintNotionalQuote = await getEnhancedFlashMintNotionalQuote(
-        isMinting,
-        inputToken,
-        outputToken,
-        indexTokenAmount,
-        gasPrice,
-        sellTokenPrice,
-        nativeTokenPrice,
-        slippage,
-        chainId,
-        provider,
-        signer
-      )
-
       console.log('////////')
       console.log('exchangeIssuanceZeroExQuote', flashMintZeroExQuote)
       console.log('exchangeIssuanceLeveragedQuote', flashMintLeveragedQuote)
-      console.log('flashMintNotionalQuote', flashMintNotionalQuote)
     }
 
     const quoteResult: FlashMintQuoteResult = {
       quotes: {
         flashMintLeveraged: flashMintLeveragedQuote,
-        flashMintNotional: flashMintNotionalQuote,
         flashMintPerp: flashMintPerpQuote,
         flashMintZeroEx: flashMintZeroExQuote,
       },

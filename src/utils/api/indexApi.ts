@@ -1,4 +1,4 @@
-import { getIndexApiHeaders, IndexApiBaseUrl } from 'constants/server'
+import { getIndexApiHeaders } from 'constants/server'
 
 export class IndexApi {
   /**
@@ -9,7 +9,7 @@ export class IndexApi {
     // console.log('GET', path)
     try {
       const headers = getIndexApiHeaders()
-      const resp = await fetch(`${IndexApiBaseUrl}${path}`, {
+      const resp = await fetch(`${path}`, {
         headers,
       })
       return resp.json()
