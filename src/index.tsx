@@ -132,6 +132,7 @@ root.render(
           <Route path='/' element={<App />}>
             <Route index element={<Homepage />} />
             <Route path='products' element={<Products />} />
+            <Route path='voting' element={<Governance />} />
             <Route path='mvi' element={<MVI />} />
           </Route>
         </Routes>
